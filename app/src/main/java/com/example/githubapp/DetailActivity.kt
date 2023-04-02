@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.githubapp.databinding.ActivityDetailBinding
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.math.log
 
 class DetailActivity : AppCompatActivity() {
@@ -16,6 +20,11 @@ class DetailActivity : AppCompatActivity() {
 
     companion object{
         private const val TAG = "DetailActivity"
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.tab_text_1,
+            R.string.tab_text_2
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +40,18 @@ class DetailActivity : AppCompatActivity() {
 
         detailViewModel.selectedUser.observe(this) { user ->
             setUserDetail(user)
+
+            TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+                val currTab = resources.getString(TAB_TITLES[position])
+                val count = if (currTab == resources.getString(R.string.tab_text_1)) {
+                    detailViewModel.selectedUser.value?.followers
+                } else {
+                    detailViewModel.selectedUser.value?.following
+                }
+
+                tab.text = "$count $currTab"
+            }.attach()
+            supportActionBar?.elevation = 0f
         }
 
         detailViewModel.isLoading.observe(this) { loading ->
@@ -39,6 +60,10 @@ class DetailActivity : AppCompatActivity() {
 
         val login = intent.getStringExtra("LOGIN")
         detailViewModel.getDetailUser(login!!)
+
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, login)
+        val viewPager: ViewPager2 = findViewById(R.id.view_pager)
+        viewPager.adapter = sectionsPagerAdapter
     }
 
     private fun setUserDetail(user: UserDetailResponse) {
