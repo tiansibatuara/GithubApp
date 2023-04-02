@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">GithubApp</string>
+    <string name="search_hint">Masukkan kata</string>
+</resources>
