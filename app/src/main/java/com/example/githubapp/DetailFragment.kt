@@ -1,7 +1,6 @@
 package com.example.githubapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,13 +13,11 @@ class DetailFragment : Fragment() {
 
     private var tabs: Int = 0
     private var login: String? = ""
+
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
-    private lateinit var detailViewModel: DetailViewModel
 
-    companion object {
-        private const val TAG = "DetailFragment"
-    }
+    private lateinit var detailViewModel: DetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +30,15 @@ class DetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentDetailBinding.inflate(
+            inflater,
+            container,
+            false)
 
         val layoutManager = LinearLayoutManager(context)
-        binding.rvUser.layoutManager = layoutManager
+        binding.rvUser
+            .layoutManager = layoutManager
 
         detailViewModel = ViewModelProvider(
             this,
@@ -46,15 +47,15 @@ class DetailFragment : Fragment() {
 
         if (tabs == 0) {
             detailViewModel.getFollowers(login!!)
-            detailViewModel.listFollowers.observe(viewLifecycleOwner) { followers ->
-                Log.d(TAG, "onCreateView: ${followers}")
+            detailViewModel.listFollowers
+                .observe(viewLifecycleOwner) { followers ->
                 setFollowData(followers)
             }
 
         } else if (tabs == 1) {
             detailViewModel.getFollowing(login!!)
-            detailViewModel.listFollowing.observe(viewLifecycleOwner) { following ->
-                Log.d(TAG, "onCreateView: ${following}")
+            detailViewModel.listFollowing
+                .observe(viewLifecycleOwner) { following ->
                 setFollowData(following)
             }
         }

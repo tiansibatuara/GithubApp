@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Query
 
 class DetailViewModel : ViewModel() {
 
@@ -30,7 +29,8 @@ class DetailViewModel : ViewModel() {
 
     fun getDetailUser(query: String) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getDetailUser(query)
+        val client = ApiConfig.getApiService()
+            .getDetailUser(query)
 
         client.enqueue(object : Callback<UserDetailResponse>{
             override fun onResponse(
@@ -41,7 +41,6 @@ class DetailViewModel : ViewModel() {
                 val responseBody = response.body()
                 if (response.isSuccessful) {
                     _selectedUser.value = responseBody
-                    Log.d(TAG, "onResponse: ${responseBody}")
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
@@ -57,7 +56,8 @@ class DetailViewModel : ViewModel() {
 
     fun getFollowing(query: String) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getFollowing(query)
+        val client = ApiConfig.getApiService()
+            .getFollowing(query)
 
         client.enqueue(object : Callback<List<FollowingResponseItem>>{
             override fun onResponse(
@@ -68,7 +68,6 @@ class DetailViewModel : ViewModel() {
                 val responseBody = response.body()
                 if (response.isSuccessful) {
                     _listFollowing.value = responseBody
-                    Log.d(TAG, "onResponse: ${responseBody}")
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
@@ -84,7 +83,8 @@ class DetailViewModel : ViewModel() {
 
     fun getFollowers(query: String) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getFollowers(query)
+        val client = ApiConfig.getApiService()
+            .getFollowers(query)
 
         client.enqueue(object : Callback<List<FollowersResponseItem>>{
             override fun onResponse(
@@ -95,7 +95,6 @@ class DetailViewModel : ViewModel() {
                 val responseBody = response.body()
                 if (response.isSuccessful) {
                     _listFollowers.value = responseBody
-                    Log.d(TAG, "onResponse: ${responseBody}")
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }

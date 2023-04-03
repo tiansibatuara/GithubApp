@@ -3,15 +3,13 @@ package com.example.githubapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
+import android.widget.ImageButton
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.githubapp.databinding.ActivityDetailBinding
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlin.math.log
 
 class DetailActivity : AppCompatActivity() {
 
@@ -19,7 +17,6 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var detailViewModel: DetailViewModel
 
     companion object{
-        private const val TAG = "DetailActivity"
         @StringRes
         private val TAB_TITLES = intArrayOf(
             R.string.tab_text_1,
@@ -30,18 +27,21 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
+        supportActionBar?.hide()
 
         detailViewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
         )[DetailViewModel::class.java]
 
-        detailViewModel.selectedUser.observe(this) { user ->
+        detailViewModel.selectedUser
+            .observe(this) { user ->
             setUserDetail(user)
 
-            TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+            TabLayoutMediator(
+                binding.tabs,
+                binding.viewPager) { tab, position ->
                 val currTab = resources.getString(TAB_TITLES[position])
                 val count = if (currTab == resources.getString(R.string.tab_text_1)) {
                     detailViewModel.selectedUser.value?.followers
@@ -54,7 +54,8 @@ class DetailActivity : AppCompatActivity() {
             supportActionBar?.elevation = 0f
         }
 
-        detailViewModel.isLoading.observe(this) { loading ->
+        detailViewModel.isLoading
+            .observe(this) { loading ->
             showLoading(loading)
         }
 
@@ -64,13 +65,16 @@ class DetailActivity : AppCompatActivity() {
         val sectionsPagerAdapter = SectionsPagerAdapter(this, login)
         val viewPager: ViewPager2 = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
+
+        val backButton = findViewById<ImageButton>(R.id.ib_back)
+        backButton.setOnClickListener {
+            finish()
+        }
     }
 
     private fun setUserDetail(user: UserDetailResponse) {
         binding.tvName.text = user.name
         binding.tvUsername.text = user.login
-        binding.tvFollowers.text = user.followers.toString()
-        binding.tvFollowing.text = user.following.toString()
         Glide.with(this)
             .load(user.avatarUrl)
             .centerCrop()

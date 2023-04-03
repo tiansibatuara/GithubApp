@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailActivity">
+    tools:context=".DetailActivity"
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/user_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
         tools:ignore="MissingConstraints"
-        android:background="@color/main"
-        android:paddingBottom="8dp">
+        android:background="@color/main">
 
         <ImageButton
             android:id="@+id/ib_back"
@@ -28,29 +28,32 @@
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="TODO" />
+            tools:ignore="ContentDescription" />
+
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_user"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ib_back"
-            tools:src="@tools:sample/avatars"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.35"
+            tools:src="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/tv_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="24sp"
-            android:textColor="@color/black"
             android:gravity="center"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/civ_user"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintTop_toBottomOf="@+id/civ_user"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="0dp"
             tools:text="Username" />
@@ -62,33 +65,39 @@
             android:layout_marginTop="4dp"
             android:textStyle="bold"
             android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/tv_username"
+            app:layout_constraintTop_toBottomOf="@+id/tv_username"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="0dp"
             android:fontFamily="@font/roboto_slab"
-            tools:text="Name"/>
-
+            tools:text="Name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#e9f1fb"
-        app:tabBackground="@drawable/tab_selector"
-        app:layout_constraintTop_toBottomOf="@id/user_card"
-        app:tabIndicatorAnimationMode="linear"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/user_card"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="fill"
         app:tabIndicatorColor="@color/status_indicator"
-        app:tabTextColor="@android:color/black" />
+        app:tabIndicatorAnimationMode="linear"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabSelectedTextColor="@color/black"
+        app:tabMode="fixed"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabs"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="220dp" />
+        tools:layout_editor_absoluteY="220dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/user_card"
+        app:layout_constraintTop_toBottomOf="@+id/tabs"
+        tools:ignore="MissingConstraints" />
 
     <ProgressBar
         android:id="@+id/progressBar"

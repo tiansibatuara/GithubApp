@@ -19,12 +19,13 @@ class MainViewModel : ViewModel() {
     }
 
     init{
-        findUser("tiansibatuara")
+        findUser("")
     }
 
      fun findUser(query: String) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getUser(query)
+        val client = ApiConfig.getApiService()
+            .getUser(query)
 
         client.enqueue(object : Callback<UserResponse> {
             override fun onResponse(
@@ -34,7 +35,6 @@ class MainViewModel : ViewModel() {
                 _isLoading.value = false
                 if (response.isSuccessful) {
                     _listUser.value = response.body()?.items
-                    Log.d(TAG, "${response.body()}")
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
